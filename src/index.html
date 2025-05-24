@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story App</title>
+    <base href="/" />
+    <link rel="manifest" href="manifest.json"/>
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
+
+  <!-- FontAwesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+
+  <style>
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: #000;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      z-index: 1000;
+      text-decoration: none;
+      transition: top 0.3s ease;
+    }
+    .skip-link:focus { top: 0; }
+
+    .loading-spinner {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      border: 5px solid var(--yellow);
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+      z-index: 9999;
+      display: none;
+    }
+    @keyframes spin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* Drawer styling */
+    .drawer-list { list-style: none; padding: 0; margin: 0; }
+    .drawer-list li { margin: 0.5rem 0; }
+    .drawer-list a { text-decoration: none; color: inherit; }
+
+    /* Basic layout */
+    body { margin: 0; font-family: sans-serif; }
+    header.navbar {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      background: #f5f5f5;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .navbar-brand { flex: 1; font-weight: bold; }
+    #drawer-button { background: none; border: none; font-size: 1.2rem; }
+    .auth-section { margin-left: 1rem; }
+    .main-content { padding: 1rem; }
+  </style>
+</head>
+
+<body>
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <header class="navbar" role="banner">
+    <button id="drawer-button" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="navbar-brand">Story App</div>
+    <button id="push-toggle-btn" class="nav-button">Subscribe</button>
+    <div class="auth-section"></div>
+
+  </header>
+
+  <aside id="navigation-drawer" class="navigation-drawer" aria-hidden="true" role="navigation">
+    <ul class="drawer-list">
+      <li><a href="#/" class="drawer-link">Home</a></li>
+      <li><a href="#/add" class="drawer-link">Add Story</a></li>
+      <li id="login-item"><a href="#/login" class="drawer-link">Login</a></li>
+      <!-- di drawer navigation list -->
+      <!-- <li><a href="#/drafts" class="drawer-link">Drafts</a></li> -->
+
+    </ul>
+  </aside>
+
+  <main id="main-content" class="main-content" role="main" tabindex="-1">
+    <!-- konten dinamis dirender di sini -->
+  </main>
+
+  <div class="loading-spinner" id="loading"></div>
+
+<script>
+  // Loader demo
+  const loading = document.getElementById('loading');
+  window.addEventListener('load', () => {
+    loading.style.display = 'block';
+    setTimeout(() => loading.style.display = 'none', 1000);
+  });
+
+  // Drawer toggle
+  const drawerBtn = document.getElementById('drawer-button');
+  const drawer = document.getElementById('navigation-drawer');
+  drawerBtn.addEventListener('click', () => {
+    const hidden = drawer.getAttribute('aria-hidden') === 'true';
+    drawer.setAttribute('aria-hidden', !hidden);
+  });
+
+  // Hide/show Login menu item
+  function updateLoginMenu() {
+    const token = localStorage.getItem('token');
+    const loginItem = document.getElementById('login-item');
+    if (loginItem) loginItem.style.display = token ? 'none' : '';
+  }
+  document.addEventListener('DOMContentLoaded', updateLoginMenu);
+  window.addEventListener('hashchange', updateLoginMenu);
+  document.addEventListener('auth-state-changed', updateLoginMenu);
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('SW registered:', reg.scope))
+      .catch(console.error);
+  }
+</script>
+</body>
+</html>
