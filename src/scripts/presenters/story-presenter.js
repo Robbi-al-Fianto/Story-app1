@@ -153,17 +153,23 @@ export default class AddStoryPresenter {
 
   async _handleSubmit(e) {
     e.preventDefault();
+    this.view.hideErrorMessage();
     const file = document.getElementById('photo').files[0];
     const lat  = document.getElementById('lat').value;
     const lon  = document.getElementById('lon').value;
     const desc = document.getElementById('description').value.trim();
 
-    if (!file || file.size > 1_000_000) {
-      return this.view.showAlert('Gambar wajib & maksimal 1MB');
+    if (!file) {
+      return this.view.showErrorMessage('📷 Gambar wajib diunggah.');
     }
+  
+    if (file.size > 1_000_000) {
+      return this.view.showErrorMessage('📸 Gambar terlalu besar. Maksimal 1MB.');
+    }
+  
     if (!lat || !lon) {
-      return this.view.showAlert('Silakan pilih lokasi');
-    }
+      return this.view.showErrorMessage('📍 Silakan pilih lokasi di peta.');
+    }  
 
     const formData = new FormData();
     formData.append('photo', file);

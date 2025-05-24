@@ -47,6 +47,8 @@ export default class AddStoryTemplate {
               <input type="hidden" id="lat" required />
               <input type="hidden" id="lon" required />
             </div>
+
+            <div id="form-error" class="form-error" hidden></div>
             <!-- SUBMIT -->
             <button type="submit" class="btn btn-primary w-100">
               Publikasikan

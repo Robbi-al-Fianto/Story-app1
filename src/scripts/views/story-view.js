@@ -59,4 +59,17 @@ export default class AddStoryView {
   getPhotoFile() {
     return document.getElementById('photo').files[0];
   }
+  showErrorMessage(message) {
+    const box = document.getElementById('form-error');
+    if (box) {
+      box.textContent = message;
+      box.hidden = false;
+    }
+  }
+  
+  hideErrorMessage() {
+    const box = document.getElementById('form-error');
+    if (box) box.hidden = true;
+  }
+  
 }
