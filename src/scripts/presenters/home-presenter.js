@@ -20,6 +20,15 @@ export default class HomePresenter {
       const stories = await this.storyService.getAllStories({ location: 1 });
       // 2) simpan ke IndexedDB
       await saveStoriesToDb(stories);
+
+      const imgCache = await caches.open('story-imgs');
+      await Promise.all(
+        stories.map((s) => {
+          // hanya cache jika belum ada
+          return imgCache.match(s.photoUrl)
+            .then(hit => hit || imgCache.add(s.photoUrl));
+        })
+      );
       // 3) render seperti biasa
       this.view.initializeMap(stories);
       this.view.renderStories(stories);
