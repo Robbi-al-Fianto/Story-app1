@@ -1,2 +1,2 @@
-APP_URL=http://localhost:9000 
+APP_URL=https://robbi-al-fianto.github.io/Story-app1
 MAP_SERVICE_API_KEY=OpenStreetMap

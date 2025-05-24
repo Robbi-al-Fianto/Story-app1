@@ -19,7 +19,7 @@ export default class AddStoryTemplate {
                   Upload Gambar
                 </button>
               </div>
-              <input type="file" id="photo" hidden required />
+              <input type="file" id="photo" hidden />
 
               <!-- Preview Kamera -->
               <div class="camera-container" hidden>
