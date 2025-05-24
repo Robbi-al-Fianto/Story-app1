@@ -187,6 +187,10 @@ export default class App {
       hasToken: !!localStorage.getItem('token'),
       userName: localStorage.getItem('userName') || 'Guest'
     });
+    const pushBtn = document.getElementById('push-toggle-btn');
+    if (pushBtn) {
+      pushBtn.style.display = localStorage.getItem('token') ? '' : 'none';
+   }
   }
 
   #navbarContent({ isGuest, hasToken, userName }) {

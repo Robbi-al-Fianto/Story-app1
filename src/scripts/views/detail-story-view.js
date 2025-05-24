@@ -9,8 +9,32 @@ export default class DetailStoryView {
 
   // Dipanggil di StoryPage.afterRender
   renderBaseTemplate() {
-    document.querySelector('#main-content').innerHTML = this.template.detailTemplate();
-  }
+    document.querySelector('#main-content').innerHTML = `
+    ${this.template.detailTemplate()}
+    <div id="image-modal" style="
+      display:none;
+      position:fixed;
+      top:0; left:0; right:0; bottom:0;
+      background:rgba(0,0,0,0.85);
+      justify-content:center;
+      align-items:center;
+      z-index:10000;
+    ">
+      <img id="modal-image" src="" alt="Full Image" style="
+        max-width:90vw;
+        max-height:90vh;
+        box-shadow:0 0 20px rgba(255,255,255,0.5);
+        border-radius:8px;
+      "/>
+    </div>
+  `;
+
+  // Modal close on click
+  document.getElementById('image-modal')
+    .addEventListener('click', () => {
+      document.getElementById('image-modal').style.display = 'none';
+    });
+   }
 
   showLoading() {
     const container = document.querySelector('.story-detail');
@@ -33,12 +57,23 @@ export default class DetailStoryView {
 
   renderStory(story) {
     document.getElementById('story-title').textContent = story.name;
-    const img = document.getElementById('story-image');
-    img.src = story.photoUrl;
-    img.alt = story.name;
-    document.getElementById('story-desc').textContent = story.description;
-    document.getElementById('story-date').textContent = new Date(story.createdAt).toLocaleString();
-  }
+
+  const img = document.getElementById('story-image');
+  img.src = story.photoUrl;
+  img.alt = story.name;
+
+  // Buka modal gambar saat diklik
+  img.style.cursor = 'zoom-in';
+  img.addEventListener('click', () => {
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-image');
+    modalImg.src = story.photoUrl;
+    modal.style.display = 'flex';
+  });
+
+  document.getElementById('story-desc').textContent = story.description;
+  document.getElementById('story-date').textContent = new Date(story.createdAt).toLocaleString();
+}
 
   renderMap(lat, lon) {
     if (this.map) this.map.remove();

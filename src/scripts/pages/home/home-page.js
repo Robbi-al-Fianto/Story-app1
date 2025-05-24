@@ -13,8 +13,7 @@ export default class HomePage {
     this.presenter = new HomePresenter(this.view, storyService);
     // bind tombol add / guest-add
     this.view.bindAddButton(isGuest => {
-      if (isGuest) navigate('/login');
-      else navigate('/add');
+       navigate('/add');
     });
     return this.presenter;
   }

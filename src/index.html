@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Story App</title>
-    <base href="/" />
+  <base href="/Story-app1/"/>
     <link rel="manifest" href="manifest.json"/>
   <!-- Leaflet CSS -->
   <link
@@ -93,7 +93,7 @@
       <li><a href="#/add" class="drawer-link">Add Story</a></li>
       <li id="login-item"><a href="#/login" class="drawer-link">Login</a></li>
       <!-- di drawer navigation list -->
-      <!-- <li><a href="#/drafts" class="drawer-link">Drafts</a></li> -->
+      <li><a href="#/drafts" class="drawer-link">Drafts</a></li>
 
     </ul>
   </aside>
@@ -132,7 +132,7 @@
 </script>
 <script>
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
+    navigator.serviceWorker.register('/Story-app1/sw.js')
       .then(reg => console.log('SW registered:', reg.scope))
       .catch(console.error);
   }
