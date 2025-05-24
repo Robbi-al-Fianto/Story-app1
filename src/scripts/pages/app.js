@@ -118,20 +118,35 @@ export default class App {
     const page = new PageComponent();
     const template = await page.render();
 
-   await this.#performViewTransition(() => {
-     this.#content.innerHTML = template;
-   });
-
-
-    this.#currentPresenter = page.initPresenter({
-      authService: AuthService,
-      storyService: StoryService,
-      navigate: this.#navigateTo.bind(this)
+    await this.#performViewTransition(() => {
+      this.#content.innerHTML = template;
     });
+
+    // Safe initialization of presenter
+    this.#currentPresenter = this.#initializePresenter(page);
 
     await page.afterRender();
    
     this.#updateUIState();
+  }
+
+  #initializePresenter(page) {
+    // Check if page has initPresenter method
+    if (typeof page.initPresenter === 'function') {
+      try {
+        return page.initPresenter({
+          authService: AuthService,
+          storyService: StoryService,
+          navigate: this.#navigateTo.bind(this)
+        });
+      } catch (error) {
+        console.warn('Error initializing presenter for page:', error);
+        return null;
+      }
+    }
+    
+    // Return null or empty object if no presenter needed
+    return null;
   }
 
   async #performViewTransition(updateCallback) {
@@ -187,10 +202,11 @@ export default class App {
       hasToken: !!localStorage.getItem('token'),
       userName: localStorage.getItem('userName') || 'Guest'
     });
+    
     const pushBtn = document.getElementById('push-toggle-btn');
     if (pushBtn) {
       pushBtn.style.display = localStorage.getItem('token') ? '' : 'none';
-   }
+    }
   }
 
   #navbarContent({ isGuest, hasToken, userName }) {
@@ -230,6 +246,7 @@ export default class App {
   #setupPushToggle() {
     const btn = document.getElementById('push-toggle-btn');
     if (!btn) return;
+    
     const updateLabel = () => {
       btn.textContent = isSubscribed() ? 'Unsubscribe 🔕' : 'Subscribe 🔔';
     };
@@ -252,7 +269,6 @@ export default class App {
       }
     });
   }
-
 
   #updateDrawerLinks() {
     const loginItem = this.#navigationDrawer.querySelector('a[href="#/login"]')?.parentElement;
@@ -304,4 +320,3 @@ export default class App {
     });
   }
 }
-
