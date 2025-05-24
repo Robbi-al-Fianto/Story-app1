@@ -56,8 +56,8 @@ h5 {
 }
 
 /* ===================================================
-   NAVBAR & HEADER
-   =================================================== */
+       NAVBAR & HEADER
+       =================================================== */
 .navbar {
   position: fixed;
   top: 0;
@@ -175,8 +175,8 @@ h5 {
 }
 
 /* ===================================================
-   MAIN CONTENT & LAYOUT
-   =================================================== */
+       MAIN CONTENT & LAYOUT
+       =================================================== */
 .main-content {
   padding-top: 64px;
   margin-left: 0;
@@ -194,14 +194,16 @@ h5 {
 }
 
 /* ===================================================
-   BUTTONS
-   =================================================== */
+       BUTTONS
+       =================================================== */
 .btn {
   display: inline-block;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
+  border: none;
+  cursor: pointer;
   transition: background var(--transition), transform var(--transition);
 }
 
@@ -224,9 +226,13 @@ h5 {
   background: #bbb;
 }
 
+.w-100 {
+  width: 100%;
+}
+
 /* ===================================================
-   GUEST BANNER
-   =================================================== */
+       GUEST BANNER
+       =================================================== */
 .guest-warning {
   background: var(--yellow-light);
   padding: 1.5rem;
@@ -237,8 +243,8 @@ h5 {
 }
 
 /* ===================================================
-   STORY GRID & CARDS
-   =================================================== */
+       STORY GRID & CARDS
+       =================================================== */
 .story-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -285,8 +291,8 @@ h5 {
 }
 
 /* ===================================================
-   MAP & EMBED
-   =================================================== */
+       MAP & EMBED
+       =================================================== */
 #map,
 .map-embed {
   width: 100%;
@@ -308,8 +314,8 @@ h5 {
 }
 
 /* ===================================================
-   FORMS & INPUTS
-   =================================================== */
+       FORMS & INPUTS
+       =================================================== */
 form {
   display: flex;
   flex-direction: column;
@@ -322,6 +328,7 @@ form {
 label {
   font-weight: 600;
   margin-bottom: 0.5rem;
+  display: block;
 }
 
 input[type="text"],
@@ -345,8 +352,8 @@ select:focus {
 }
 
 /* ===================================================
-   ADD STORY FORM 
-   =================================================== */
+       ADD STORY FORM 
+       =================================================== */
 .story-form-card {
   background: var(--card-bg);
   border-radius: 12px;
@@ -354,6 +361,48 @@ select:focus {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   max-width: 600px;
   margin: 2rem auto;
+}
+
+.page-title {
+  text-align: center;
+  color: var(--text-dark);
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.story-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Form Buttons Layout */
+.form-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.story-form .btn.w-100 {
+  margin-bottom: 1rem;
+}
+
+#save-draft-btn {
+  background: #6c757d;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+  margin-top: 0.5rem;
+}
+
+#save-draft-btn:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
 }
 
 .photo-buttons {
@@ -414,9 +463,92 @@ select:focus {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.photo-preview-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.remove-photo-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 0, 0, 0.8);
+  color: white;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition);
+}
+
+.remove-photo-button:hover {
+  background: rgba(255, 0, 0, 1);
+}
+
 /* ===================================================
-   LOGIN & REGISTER
-   =================================================== */
+       STORY DETAIL & COMMENTS
+       =================================================== */
+.story-detail {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.story-map {
+  width: 100%;
+  height: 300px;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.story-info {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.story-img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.comments-section {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.comment-list {
+  list-style: none;
+  margin-bottom: 2rem;
+}
+
+.comment-form {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.comment-form input {
+  flex: 1;
+}
+
+/* ===================================================
+       LOGIN & REGISTER
+       =================================================== */
 .login-container,
 .auth-container {
   display: flex;
@@ -453,6 +585,7 @@ select:focus {
   font-weight: 600;
   cursor: pointer;
   transition: background var(--transition), transform var(--transition);
+  width: 100%;
 }
 
 .login-button:hover,
@@ -482,16 +615,9 @@ select:focus {
   text-decoration: underline;
 }
 
-.story-detail .story-map,
-.story-detail .story-img {
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-}
-
 /* ===================================================
-   RESPONSIVE
-   =================================================== */
+       RESPONSIVE
+       =================================================== */
 @media (max-width: 768px) {
   .story-grid {
     grid-template-columns: 1fr;
@@ -500,23 +626,10 @@ select:focus {
   .navbar {
     padding: 0 1rem;
   }
-}
 
-@media (max-width: 480px) {
-  .story-form textarea#description {
-    font-size: 0.9rem;
-    min-height: 120px;
-  }
-}
-
-
-@keyframes drawerSlide {
-  from {
-    left: -260px;
-  }
-
-  to {
-    left: 0;
+  .comment-form {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 
@@ -526,10 +639,41 @@ select:focus {
   .story-detail .story-img {
     max-height: 250px;
   }
-}
-@media (max-width: 600px) {
+
   .navbar-brand {
     font-size: 1.125rem;
-    /* misal 18px */
+  }
+
+  .story-form-card {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
   }
 }
+
+@media (max-width: 480px) {
+  .story-form textarea#description {
+    font-size: 0.9rem;
+    min-height: 120px;
+  }
+
+  .photo-buttons {
+    flex-direction: column;
+  }
+
+  .photo-buttons .btn {
+    min-width: unset;
+  }
+}
+
+@keyframes drawerSlide {
+  from {
+    left: -260px;
+  }
+
+  to {
+    left: 0;
+  } }
