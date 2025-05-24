@@ -50,14 +50,21 @@
   ],
   "screenshots": [
     {
-      "src": "screenshots/ss1.png",
+      "src": "screenshots/ss1home.png",
       "sizes": "1280x720",
       "type": "image/png",
-      "label": "Desktop",
+      "label": "Home Page (Wide)",
       "form_factor": "wide"
     },
     {
-      "src": "screenshots/ss2.png",
+      "src": "screenshots/ss1add.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "label": "Add Story (Wide)",
+      "form_factor": "wide"
+    },
+    {
+      "src": "screenshots/ss2mobile.png",
       "sizes": "720x1280",
       "type": "image/png",
       "label": "Mobile",
