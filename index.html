@@ -9,7 +9,10 @@
       text-decoration: none;
       transition: top 0.3s ease;
     }
-    .skip-link:focus { top: 0; }
+
+    .skip-link:focus {
+      top: 0;
+    }
 
     .loading-spinner {
       position: fixed;
@@ -25,17 +28,39 @@
       z-index: 9999;
       display: none;
     }
+
     @keyframes spin {
-      to { transform: translate(-50%, -50%) rotate(360deg); }
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
     }
 
     /* Drawer styling */
-    .drawer-list { list-style: none; padding: 0; margin: 0; }
-    .drawer-list li { margin: 0.5rem 0; }
-    .drawer-list a { text-decoration: none; color: inherit; }
+    .drawer-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .drawer-list li {
+      margin: 0.5rem 0;
+    }
+
+    .drawer-list a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .hidden {
+      display: none !important;
+    }
 
     /* Basic layout */
-    body { margin: 0; font-family: sans-serif; }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+
     header.navbar {
       display: flex;
       align-items: center;
@@ -45,34 +70,67 @@
       top: 0;
       z-index: 10;
     }
-    .navbar-brand { flex: 1; font-weight: bold; }
-    #drawer-button { background: none; border: none; font-size: 1.2rem; }
-    .auth-section { margin-left: 1rem; }
-    .main-content { padding: 1rem; }</style><link href="/Story-app1/app.6529b1f9cd96897457a2.css" rel="stylesheet"></head><body><a href="#main-content" class="skip-link">Skip to content</a><header class="navbar" role="banner"><button id="drawer-button" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button><div class="navbar-brand">Story App</div><button id="push-toggle-btn" class="nav-button">Subscribe</button><div class="auth-section"></div></header><aside id="navigation-drawer" class="navigation-drawer" aria-hidden="true" role="navigation"><ul class="drawer-list"><li><a href="#/" class="drawer-link">Home</a></li><li><a href="#/add" class="drawer-link">Add Story</a></li><li id="login-item"><a href="#/login" class="drawer-link">Login</a></li><li><a href="#/liked" class="drawer-link">Liked Story</a></li></ul></aside><main id="main-content" class="main-content" role="main" tabindex="-1"></main><div class="loading-spinner" id="loading"></div><script>// Loader demo
-  const loading = document.getElementById('loading');
-  window.addEventListener('load', () => {
-    loading.style.display = 'block';
-    setTimeout(() => loading.style.display = 'none', 1000);
-  });
 
-  // Drawer toggle
-  const drawerBtn = document.getElementById('drawer-button');
-  const drawer = document.getElementById('navigation-drawer');
-  drawerBtn.addEventListener('click', () => {
-    const hidden = drawer.getAttribute('aria-hidden') === 'true';
-    drawer.setAttribute('aria-hidden', !hidden);
-  });
+    .navbar-brand {
+      flex: 1;
+      font-weight: bold;
+    }
 
-  // Hide/show Login menu item
-  function updateLoginMenu() {
-    const token = localStorage.getItem('token');
-    const loginItem = document.getElementById('login-item');
-    if (loginItem) loginItem.style.display = token ? 'none' : '';
-  }
-  document.addEventListener('DOMContentLoaded', updateLoginMenu);
-  window.addEventListener('hashchange', updateLoginMenu);
-  document.addEventListener('auth-state-changed', updateLoginMenu);</script><script>if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/Story-app1/sw.js')
-      .then(reg => console.log('SW registered:', reg.scope))
-      .catch(console.error);
-  }</script><script defer="defer" src="/Story-app1/758.bundle.js"></script><script defer="defer" src="/Story-app1/app.bundle.js"></script></body></html>
+    #drawer-button {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+    }
+
+    .auth-section {
+      margin-left: 1rem;
+    }
+
+    .main-content {
+      padding: 1rem;
+    }</style><link href="/Story-app1/app.6529b1f9cd96897457a2.css" rel="stylesheet"></head><body><a href="#main-content" class="skip-link">Skip to content</a><header class="navbar" role="banner"><button id="drawer-button" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button><div class="navbar-brand">Story App</div><button id="push-toggle-btn" class="nav-button">Subscribe</button><div class="auth-section"></div></header><aside id="navigation-drawer" class="navigation-drawer" aria-hidden="true" role="navigation"><ul class="drawer-list"><li><a href="#/" class="drawer-link">🏠 Home</a></li><li><a href="#/add" class="drawer-link">➕ Add Story</a></li><li id="login-item"><a href="#/login" class="drawer-link">Login</a></li><li id="liked-item" style="display: none;"><a href="#/liked" class="drawer-link">💖 Liked Stories</a></li></ul></aside><main id="main-content" class="main-content" role="main" tabindex="-1"></main><div class="loading-spinner" id="loading"></div><script>// Loader demo
+    const loading = document.getElementById('loading');
+    window.addEventListener('load', () => {
+      loading.style.display = 'block';
+      setTimeout(() => loading.style.display = 'none', 1000);
+    });
+
+    // Drawer toggle
+    const drawerBtn = document.getElementById('drawer-button');
+    const drawer = document.getElementById('navigation-drawer');
+    drawerBtn.addEventListener('click', () => {
+      const hidden = drawer.getAttribute('aria-hidden') === 'true';
+      drawer.setAttribute('aria-hidden', !hidden);
+    });
+
+
+    function updateMenuVisibility() {
+      const token = localStorage.getItem('token');
+      const isGuest = localStorage.getItem('isGuest') === 'true';
+
+      const loginItem = document.getElementById('login-item');
+      const likedItem = document.getElementById('liked-item');
+
+      if (loginItem) {
+        loginItem.style.display = token ? 'none' : '';
+      }
+
+      if (likedItem) {
+        likedItem.style.display = token ? '' : 'none';
+      }
+    }
+
+
+    document.addEventListener('DOMContentLoaded', updateMenuVisibility);
+    window.addEventListener('hashchange', updateMenuVisibility);
+    document.addEventListener('auth-state-changed', updateMenuVisibility);
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'token' || e.key === 'isGuest') {
+        updateMenuVisibility();
+      }
+    });</script><script>if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/Story-app1/sw.js')
+        .then(reg => console.log('SW registered:', reg.scope))
+        .catch(console.error);
+    }</script><script defer="defer" src="/Story-app1/758.bundle.js"></script><script defer="defer" src="/Story-app1/app.bundle.js"></script></body></html>
