@@ -25,21 +25,30 @@ export default class HomeTemplate {
     `;
   }
 
-  storyCard(story) {
-       return `
-         <a href="#/stories/${story.id}" class="story-link">
-           <article class="story-card">
-             <img src="${story.photoUrl}" alt="${story.name}" class="story-image">
-             <div class="story-content">
-               <h3 class="story-title">${story.name}</h3>
-               <p class="story-description">${story.description}</p>
-               <time class="story-date">
-                 ${new Date(story.createdAt).toLocaleDateString()}
-               </time>
-             </div>
-           </article>
-         </a>
-       `;
+  storyCard(story, isLiked = false) {
+    return `
+      <article class="story-card" data-story-id="${story.id}">
+        <div class="story-card-header">
+          <a href="#/stories/${story.id}" class="story-link">
+            <img src="${story.photoUrl}" alt="${story.name}" class="story-image">
+          </a>
+          <button class="like-button ${isLiked ? 'liked' : ''}" 
+                  data-story-id="${story.id}"
+                  title="${isLiked ? 'Hapus dari favorit' : 'Tambah ke favorit'}">
+            <span class="like-icon">${isLiked ? '❤️' : '🤍'}</span>
+          </button>
+        </div>
+        <div class="story-content">
+          <a href="#/stories/${story.id}" class="story-link">
+            <h3 class="story-title">${story.name}</h3>
+            <p class="story-description">${story.description}</p>
+            <time class="story-date">
+              ${new Date(story.createdAt).toLocaleDateString('id-ID')}
+            </time>
+          </a>
+        </div>
+      </article>
+    `;
   }
 
   _guestWarning() {
@@ -56,6 +65,14 @@ export default class HomeTemplate {
       <div class="error">
         <h2>Error!</h2>
         <p>${message}</p>
+      </div>
+    `;
+  }
+
+  loadingTemplate() {
+    return `
+      <div class="loading">
+        <p>Memuat cerita...</p>
       </div>
     `;
   }

@@ -1,5 +1,5 @@
 // src/scripts/presenters/story-presenter.js
-import { saveDraft } from '../utils/db.js';
+// import { saveDraft } from '../utils/db.js';
 import { saveComment, getCommentsByStory } from '../utils/db.js';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -38,7 +38,7 @@ export default class AddStoryPresenter {
 
     // bind submit
     this.view.bindSubmit(e => this._handleSubmit(e));
-    this.view.bindSaveDraft(() => this.handleSaveDraft());
+    // this.view.bindSaveDraft(() => this.handleSaveDraft());
   }
 
   async _openCamera() {
@@ -96,58 +96,6 @@ export default class AddStoryPresenter {
       document.getElementById('photo-preview').src = URL.createObjectURL(input.files[0]);
       document.querySelector('.photo-preview-container').hidden = false;
       this._stopCamera();
-    }
-  }
-
-  async handleSaveDraft() {
-    const desc = this.view.getDescription().trim();
-    const lat  = this.view.getLat();
-    const lon  = this.view.getLon();
-    const file = this.view.getPhotoFile();
-
-    if (!desc || !file) {
-      return this.view.showAlert('Deskripsi dan foto wajib diisi.');
-    }
-
-    const draft = {
-      id: uuidv4(),
-      description: desc,
-      lat, lon,
-      // Simpan Blob jika perlu offline image preview,
-      // bisa juga hanya metadata dan ulangi capture nanti
-      createdAt: new Date().toISOString(),
-    };
-
-    try {
-      await saveDraft(draft);
-      this.view.showAlert('Draft berhasil disimpan!');
-    } catch (err) {
-      this.view.showAlert('Gagal simpan draft: ' + err.message);
-    }
-  }  async handleSaveDraft() {
-    const desc = this.view.getDescription().trim();
-    const lat  = this.view.getLat();
-    const lon  = this.view.getLon();
-    const file = this.view.getPhotoFile();
-
-    if (!desc || !file) {
-      return this.view.showAlert('Deskripsi dan foto wajib diisi.');
-    }
-
-    const draft = {
-      id: uuidv4(),
-      description: desc,
-      lat, lon,
-      // Simpan Blob jika perlu offline image preview,
-      // bisa juga hanya metadata dan ulangi capture nanti
-      createdAt: new Date().toISOString(),
-    };
-
-    try {
-      await saveDraft(draft);
-      this.view.showAlert('Draft berhasil disimpan!');
-    } catch (err) {
-      this.view.showAlert('Gagal simpan draft: ' + err.message);
     }
   }
 

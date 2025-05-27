@@ -53,7 +53,7 @@ export default class AddStoryTemplate {
             <button type="submit" class="btn btn-primary w-100">
               Publikasikan
             </button>
-              <button type="button" id="save-draft-btn">Simpan Draft</button>
+
           </form>
         </div>
       </section>

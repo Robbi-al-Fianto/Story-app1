@@ -4,7 +4,7 @@ import LoginPage from '../pages/auth/login-page';
 import RegisterPage from '../pages/auth/register-page';
 import NotFoundPage from '../pages/404/404-page.js'; 
 import StoryPage   from '../pages/story/story-page.js';
-import DraftsPage    from '../pages/drafts/drafts-page.js';
+import LikedPage from '../pages/liked/liked-page.js';
 
 const routes = {
   '/': HomePage,     
@@ -12,7 +12,7 @@ const routes = {
   '/login': LoginPage,
   '/register': RegisterPage,
   '/stories/:id': StoryPage,
-  '/drafts': DraftsPage,
+  '/liked': LikedPage,
   '/404': NotFoundPage,
 };
 

@@ -1,4 +1,5 @@
 import { saveStoriesToDb, getStoriesFromDb } from '../utils/db.js';
+import { saveLikedStory, removeLikedStory, isStoryLiked,} from '../utils/db.js';
 
 export default class HomePresenter {
   constructor(view, storyService) {
@@ -31,7 +32,14 @@ export default class HomePresenter {
       );
       // 3) render seperti biasa
       this.view.initializeMap(stories);
-      this.view.renderStories(stories);
+        // sebelum renderStories, cek status liked per story
+      const likeStates = await Promise.all(
+        stories.map(s => isStoryLiked(s.id))
+      );
+      this.view.renderStories(stories, likeStates);
+  // bind tombol like
+      this.view.bindLikeButtons(this._handleLike.bind(this));
+      
     } catch (err) {
       // fallback: baca dari cache
       const cached = await getStoriesFromDb();
@@ -49,6 +57,21 @@ export default class HomePresenter {
   async cleanup() {
     this.view.mapView?.destroy();
   }
-
-
+   async _handleLike(storyId, currentlyLiked) {
+       if (currentlyLiked) {
+         await removeLikedStory(storyId);
+         document.dispatchEvent(new CustomEvent('story-unliked', { detail: { storyId } }));
+       } else {
+         // dapatkan data story lengkap (misal dari cache stories)
+         const story = (await getStoriesFromDb()).find(s => s.id === storyId);
+         if (story) {
+           await saveLikedStory(story);
+           document.dispatchEvent(new CustomEvent('story-liked', { detail: { storyId } }));
+         }
+       }
+       // update state tombol di UI
+       this.view.updateLikeButton(storyId, !currentlyLiked);
+     }
+    
 }
+
