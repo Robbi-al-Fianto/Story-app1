@@ -17,24 +17,18 @@ export default class NotFoundPage {
     `;
   }
 
-  // Method yang diperlukan oleh app.js
   initPresenter(dependencies) {
-    // 404 page tidak memerlukan presenter yang kompleks
-    // Return objek kosong atau null untuk konsistensi
     return {
       cleanup: () => {
-        // Cleanup jika diperlukan
       }
     };
   }
 
   async afterRender() {
-    // Tambahkan styling untuk 404 page jika diperlukan
     this.#addStyles();
   }
 
   #addStyles() {
-    // Tambah style inline jika belum ada di CSS global
     const style = document.createElement('style');
     style.textContent = `
       .error-page {
@@ -91,7 +85,6 @@ export default class NotFoundPage {
       }
     `;
     
-    // Hanya tambahkan jika belum ada
     if (!document.querySelector('#error-page-styles')) {
       style.id = 'error-page-styles';
       document.head.appendChild(style);

@@ -7,7 +7,6 @@ export default class DetailStoryView {
     this.map      = null;
   }
 
-  // Dipanggil di StoryPage.afterRender
   renderBaseTemplate() {
     document.querySelector('#main-content').innerHTML = `
     ${this.template.detailTemplate()}
@@ -29,7 +28,6 @@ export default class DetailStoryView {
     </div>
   `;
 
-  // Modal close on click
   document.getElementById('image-modal')
     .addEventListener('click', () => {
       document.getElementById('image-modal').style.display = 'none';
@@ -62,7 +60,6 @@ export default class DetailStoryView {
   img.src = story.photoUrl;
   img.alt = story.name;
 
-  // Buka modal gambar saat diklik
   img.style.cursor = 'zoom-in';
   img.addEventListener('click', () => {
     const modal = document.getElementById('image-modal');
@@ -101,22 +98,29 @@ export default class DetailStoryView {
      });
    }
 
-  renderComments(comments) {
+   renderComments(comments, currentUser) {
     const list = document.getElementById('comment-list');
     if (!comments.length) {
       list.innerHTML = '<li>Belum ada komentar.</li>';
       return;
     }
-    list.innerHTML = comments.map(c => `
-      <li class="comment-item" style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem;">
-        <div>  
-      <strong>${c.author}</strong>
-      <small style="margin-left:0.5rem;color:#666;"> ${new Date(c.createdAt).toLocaleString()}</small>
-        <p style="margin:0.5rem 0 0 0;">${c.text}</p>
-        </div>
-       <button class="btn btn-sm btn-danger delete-comment" data-cid="${c.cid}" style="margin-left:1rem;align-self:flex-start;">🗑️</button>
-      </li>
-    `).join('');
+  
+    list.innerHTML = comments.map(c => {
+      const isOwner = c.author === currentUser;
+      return `
+        <li class="comment-item" style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem;">
+          <div>  
+            <strong>${c.author}</strong>
+            <small style="margin-left:0.5rem;color:#666;"> ${new Date(c.createdAt).toLocaleString()}</small>
+            <p style="margin:0.5rem 0 0 0;">${c.text}</p>
+          </div>
+          ${isOwner ? `
+            <button class="btn btn-sm btn-danger delete-comment" data-cid="${c.cid}" style="margin-left:1rem;align-self:flex-start;">
+              🗑️
+            </button>` : ''}
+        </li>
+      `;
+    }).join('');
   }
 
   clearCommentInput() {

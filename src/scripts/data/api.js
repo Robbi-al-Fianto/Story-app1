@@ -51,7 +51,6 @@ export const AuthService = {
     const token = localStorage.getItem('token');
     if (!token) return;
 
-    // subscription.toJSON() menghasilkan { endpoint, keys: { p256dh, auth } }
     const subJson = subscription.toJSON();
     const payload = {
       endpoint: subJson.endpoint,

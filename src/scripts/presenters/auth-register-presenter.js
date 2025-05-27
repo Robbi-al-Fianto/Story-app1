@@ -15,14 +15,14 @@ export default class AuthRegisterPresenter {
 
   async handleRegister({ name, email, password }) {
     try {
-      // 1. Registrasi
+
       await this.authService.register({ name, email, password });
-      // 2. Auto-login
+
       const loginRes = await this.authService.login({ email, password });
-      // 3. Simpan token & nama
+
       localStorage.setItem('token', loginRes.loginResult.token);
       localStorage.setItem('userName', loginRes.loginResult.name);
-      // navigasi ke Home
+
       this.navigate('/');
     } catch (error) {
       this.view.showError(error.message);

@@ -2,6 +2,7 @@ import routes from '../routes/routes';
 import { getActiveRoute } from '../routes/url-parser';
 import { AuthService, StoryService } from '../data/api';
 import { subscribePush, unsubscribePush, isSubscribed } from '../utils/pushManager.js';
+import { clearUserLikedStories,clearStoriesCache } from '../utils/db.js';
 
 export default class App {
   #content;
@@ -67,21 +68,33 @@ export default class App {
     }
   }
 
-  #handleLogout() {
-    // 1. Unsubscribe di SW
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.ready
-        .then(reg => reg.pushManager.getSubscription())
-        .then(sub => sub?.unsubscribe())
-        .catch(console.error);
-    }
-    // 2. Unregister di backend (gunakan AuthService langsung)
-    AuthService.unregisterPush()
-      .catch(err => console.error('UnregisterPush failed:', err));
+  async #handleLogout() {
+    try {
 
-    // 3. Clear storage & navigasi
-    localStorage.clear();
-    this.#navigateTo('/login', true);
+      await clearStoriesCache();
+      
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.ready
+          .then(reg => reg.pushManager.getSubscription())
+          .then(sub => sub?.unsubscribe())
+          .catch(console.error);
+      }
+      
+      AuthService.unregisterPush()
+        .catch(err => console.error('UnregisterPush failed:', err));
+
+      const userName = localStorage.getItem('userName');
+      localStorage.clear();
+      if (userName) localStorage.setItem('userName', userName);
+      this.#navigateTo('/login', true);
+    } catch (error) {
+      console.error('Logout error:', error);
+
+      this.#navigateTo('/login', true);
+      await clearStoriesCache();
+      localStorage.clear();
+      this.#navigateTo('/login', true);
+    }
   }
 
   #handleGuestLogin() {
@@ -122,16 +135,17 @@ export default class App {
       this.#content.innerHTML = template;
     });
 
-    // Safe initialization of presenter
-    this.#currentPresenter = this.#initializePresenter(page);
+   this.#currentPresenter = this.#initializePresenter(page);
 
-    await page.afterRender();
+   if (typeof page.afterRender === 'function') {
+     await page.afterRender();
+   }
    
     this.#updateUIState();
   }
 
   #initializePresenter(page) {
-    // Check if page has initPresenter method
+
     if (typeof page.initPresenter === 'function') {
       try {
         return page.initPresenter({
@@ -144,8 +158,7 @@ export default class App {
         return null;
       }
     }
-    
-    // Return null or empty object if no presenter needed
+
     return null;
   }
 
@@ -187,7 +200,6 @@ export default class App {
     `;
   }
 
-  // UI State Management
   #updateUIState() {
     this.#updateNavbar();
     this.#updateDrawerLinks();
@@ -272,8 +284,17 @@ export default class App {
 
   #updateDrawerLinks() {
     const loginItem = this.#navigationDrawer.querySelector('a[href="#/login"]')?.parentElement;
+    const likedItem = this.#navigationDrawer.querySelector('a[href="#/liked"]')?.parentElement;
+    
     const hasToken = !!localStorage.getItem('token');
+    
+    // Hide/show login menu item
     loginItem?.classList.toggle('hidden', hasToken);
+    
+    // Hide/show liked menu item - only show if user has token (not guest)
+    if (likedItem) {
+      likedItem.style.display = hasToken ? '' : 'none';
+    }
   }
 
   // Auth Management
@@ -281,16 +302,28 @@ export default class App {
     const currentPath = window.location.hash.replace('#', '') || '/';
     const protectedRoutes = ['/', '/add'];
     const authRoutes = ['/login', '/register'];
+    const loginRequiredRoutes = ['/liked']; // Routes that require actual login (not guest)
     
     const isGuest = localStorage.getItem('isGuest') === 'true';
     const hasToken = !!localStorage.getItem('token');
 
-    if (protectedRoutes.includes(currentPath) && !hasToken && !isGuest) {
+    // Check if user tries to access liked page without being logged in
+    if (loginRequiredRoutes.includes(currentPath) && !hasToken) {
+      alert('Anda harus login terlebih dahulu untuk mengakses halaman ini.');
       this.#navigateTo('/login');
+      return;
     }
 
+    // Regular protected routes (can be accessed by guest or logged in user)
+    if (protectedRoutes.includes(currentPath) && !hasToken && !isGuest) {
+      this.#navigateTo('/login');
+      return;
+    }
+
+    // Redirect logged in users away from auth pages
     if (authRoutes.includes(currentPath) && hasToken) {
       this.#navigateTo('/');
+      return;
     }
   }
 

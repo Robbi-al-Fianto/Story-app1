@@ -12,7 +12,7 @@ export default class AddStoryPresenter {
   }
 
   init() {
-    // cek hak akses
+
     const isGuest = localStorage.getItem('isGuest') === 'true';
     const token   = localStorage.getItem('token');
     if (!token && !isGuest) {
@@ -38,7 +38,6 @@ export default class AddStoryPresenter {
 
     // bind submit
     this.view.bindSubmit(e => this._handleSubmit(e));
-    // this.view.bindSaveDraft(() => this.handleSaveDraft());
   }
 
   async _openCamera() {

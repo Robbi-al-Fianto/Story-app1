@@ -45,7 +45,11 @@ export default class AuthLoginPresenter {
       }
 
       // 6. Navigasi ke Home
-      this.navigate('/');
+      this.navigate('/', true);
+     // 7. Dispatch event auth-state-changed agar menu langsung update
+     document.dispatchEvent(new CustomEvent('auth-state-changed', {
+       detail: { isLoggedIn: true, isGuest: false }
+     }));
     } catch (error) {
       let message = error.message;
       if (message.includes('Failed to fetch')) {

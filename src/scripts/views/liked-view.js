@@ -1,4 +1,4 @@
-// src/scripts/views/liked-view.js
+// src/scripts/views/liked-view.js - Updated with success messages
 export default class LikedView {
   constructor(template) {
     this.template = template;
@@ -17,7 +17,6 @@ export default class LikedView {
       .map(story => this.template.card(story))
       .join('');
 
-    // bind remove buttons
     likedStories.forEach(story => {
       const btn = document.getElementById(`remove-${story.id}`);
       if (btn) {
@@ -29,10 +28,36 @@ export default class LikedView {
     });
   }
 
+  removeCard(storyId) {
+    const btn = document.getElementById(`remove-${storyId}`);
+    if (!btn) return;
+    const card = btn.closest('.liked-story-card');
+    if (card) card.remove();
+  }
+
   showError(message) {
     const container = document.querySelector('.liked-story-list');
     if (container) {
       container.innerHTML = this.template.errorState(message);
+    }
+  }
+
+  showSuccessMessage(message) {
+    const successElement = document.getElementById('success-message');
+    if (successElement) {
+      successElement.innerHTML = this.template.successMessage(message);
+      successElement.style.display = 'block';
+      
+      setTimeout(() => {
+        successElement.style.display = 'none';
+      }, 3000);
+    }
+  }
+
+  showAuthRequired() {
+    const container = document.querySelector('.liked-story-list');
+    if (container) {
+      container.innerHTML = this.template.authRequiredState();
     }
   }
 

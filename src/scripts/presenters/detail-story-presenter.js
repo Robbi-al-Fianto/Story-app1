@@ -23,7 +23,8 @@ export default class DetailStoryPresenter {
 
       // Render komentar awal
       const comments = await getCommentsByStory(storyId);
-      this.view.renderComments(comments);
+      const currentUser = localStorage.getItem('userName') || null;
+      this.view.renderComments(comments, currentUser);
 
     } catch (err) {
       this.view.showError(err.message);
@@ -34,25 +35,34 @@ export default class DetailStoryPresenter {
 
   async handleNewComment(storyId, text) {
     if (!text) return;
+    const currentUser = localStorage.getItem('userName') || 'Guest';
     const comment = {
       cid:       uuidv4(),
       storyId,
-      author:    localStorage.getItem('userName') || 'Guest',
+      author: currentUser,
       text,
       createdAt: new Date().toISOString(),
     };
     await saveComment(comment);
     const all = await getCommentsByStory(storyId);
-    this.view.renderComments(all);
+    this.view.renderComments(all, currentUser);
     this.view.clearCommentInput();
   }
 
   async handleDeleteComment(storyId, cid) {
-    // <— sekarang deleteComment sudah terimport
+    const currentUser = localStorage.getItem('userName') || null;
+    const allComments = await getCommentsByStory(storyId);
+    const comment = allComments.find(c => c.cid === cid);
+  
+    if (!comment) return;
+  
+    if (comment.author !== currentUser) {
+      alert('Kamu tidak memiliki izin untuk menghapus komentar ini.');
+      return;
+    }
+  
     await deleteComment(cid);
-
-    // reload daftar komentar
-    const all = await getCommentsByStory(storyId);
-    this.view.renderComments(all);
+    const updated = await getCommentsByStory(storyId);
+    this.view.renderComments(updated, currentUser);
   }
 }

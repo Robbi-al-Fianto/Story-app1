@@ -10,20 +10,19 @@ export const StoryService = {
       headers: token ? { 'Authorization': `Bearer ${token}` } : {}
     });
     const data = await handleResponse(res);
-    return data.listStory;     // kembalikan langsung array
+    return data.listStory;     
   },
 
-  // ambil detail story berdasarkan ID
   async getStoryById(id) {
     const token = localStorage.getItem('token');
     const res = await fetch(`${CONFIG.BASE_URL}/stories/${id}`, {
       headers: token ? { 'Authorization': `Bearer ${token}` } : {}
     });
     const data = await handleResponse(res);
-    return data.story;         // kembalikan objek story
+    return data.story;         
   },
 
-  // (optional) tambah story
+
   async addStory(formData) {
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Authentication required');

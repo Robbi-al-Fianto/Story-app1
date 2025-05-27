@@ -5,19 +5,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Story App</title>
-  <base href="/Story-app1/"/>
-    <link rel="manifest" href="manifest.json"/>
+  <base href="/Story-app1/" />
+  <link rel="manifest" href="manifest.json" />
   <!-- Leaflet CSS -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet/dist/leaflet.css"
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
   <!-- FontAwesome -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
     .skip-link {
@@ -31,7 +25,10 @@
       text-decoration: none;
       transition: top 0.3s ease;
     }
-    .skip-link:focus { top: 0; }
+
+    .skip-link:focus {
+      top: 0;
+    }
 
     .loading-spinner {
       position: fixed;
@@ -47,17 +44,39 @@
       z-index: 9999;
       display: none;
     }
+
     @keyframes spin {
-      to { transform: translate(-50%, -50%) rotate(360deg); }
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
     }
 
     /* Drawer styling */
-    .drawer-list { list-style: none; padding: 0; margin: 0; }
-    .drawer-list li { margin: 0.5rem 0; }
-    .drawer-list a { text-decoration: none; color: inherit; }
+    .drawer-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .drawer-list li {
+      margin: 0.5rem 0;
+    }
+
+    .drawer-list a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .hidden {
+      display: none !important;
+    }
 
     /* Basic layout */
-    body { margin: 0; font-family: sans-serif; }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+
     header.navbar {
       display: flex;
       align-items: center;
@@ -67,10 +86,25 @@
       top: 0;
       z-index: 10;
     }
-    .navbar-brand { flex: 1; font-weight: bold; }
-    #drawer-button { background: none; border: none; font-size: 1.2rem; }
-    .auth-section { margin-left: 1rem; }
-    .main-content { padding: 1rem; }
+
+    .navbar-brand {
+      flex: 1;
+      font-weight: bold;
+    }
+
+    #drawer-button {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+    }
+
+    .auth-section {
+      margin-left: 1rem;
+    }
+
+    .main-content {
+      padding: 1rem;
+    }
   </style>
 </head>
 
@@ -89,12 +123,11 @@
 
   <aside id="navigation-drawer" class="navigation-drawer" aria-hidden="true" role="navigation">
     <ul class="drawer-list">
-      <li><a href="#/" class="drawer-link">Home</a></li>
-      <li><a href="#/add" class="drawer-link">Add Story</a></li>
+      <li><a href="#/" class="drawer-link">🏠 Home</a></li>
+      <li><a href="#/add" class="drawer-link">➕ Add Story</a></li>
       <li id="login-item"><a href="#/login" class="drawer-link">Login</a></li>
-      <!-- di drawer navigation list -->
-      <li><a href="#/liked" class="drawer-link">Liked Story</a></li>
-
+      <!-- Liked menu item - initially hidden -->
+      <li id="liked-item" style="display: none;"><a href="#/liked" class="drawer-link">💖 Liked Stories</a></li>
     </ul>
   </aside>
 
@@ -104,38 +137,57 @@
 
   <div class="loading-spinner" id="loading"></div>
 
-<script>
-  // Loader demo
-  const loading = document.getElementById('loading');
-  window.addEventListener('load', () => {
-    loading.style.display = 'block';
-    setTimeout(() => loading.style.display = 'none', 1000);
-  });
+  <script>
+    // Loader demo
+    const loading = document.getElementById('loading');
+    window.addEventListener('load', () => {
+      loading.style.display = 'block';
+      setTimeout(() => loading.style.display = 'none', 1000);
+    });
 
-  // Drawer toggle
-  const drawerBtn = document.getElementById('drawer-button');
-  const drawer = document.getElementById('navigation-drawer');
-  drawerBtn.addEventListener('click', () => {
-    const hidden = drawer.getAttribute('aria-hidden') === 'true';
-    drawer.setAttribute('aria-hidden', !hidden);
-  });
+    // Drawer toggle
+    const drawerBtn = document.getElementById('drawer-button');
+    const drawer = document.getElementById('navigation-drawer');
+    drawerBtn.addEventListener('click', () => {
+      const hidden = drawer.getAttribute('aria-hidden') === 'true';
+      drawer.setAttribute('aria-hidden', !hidden);
+    });
 
-  // Hide/show Login menu item
-  function updateLoginMenu() {
-    const token = localStorage.getItem('token');
-    const loginItem = document.getElementById('login-item');
-    if (loginItem) loginItem.style.display = token ? 'none' : '';
-  }
-  document.addEventListener('DOMContentLoaded', updateLoginMenu);
-  window.addEventListener('hashchange', updateLoginMenu);
-  document.addEventListener('auth-state-changed', updateLoginMenu);
-</script>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/Story-app1/sw.js')
-      .then(reg => console.log('SW registered:', reg.scope))
-      .catch(console.error);
-  }
-</script>
+
+    function updateMenuVisibility() {
+      const token = localStorage.getItem('token');
+      const isGuest = localStorage.getItem('isGuest') === 'true';
+
+      const loginItem = document.getElementById('login-item');
+      const likedItem = document.getElementById('liked-item');
+
+      if (loginItem) {
+        loginItem.style.display = token ? 'none' : '';
+      }
+
+      if (likedItem) {
+        likedItem.style.display = token ? '' : 'none';
+      }
+    }
+
+
+    document.addEventListener('DOMContentLoaded', updateMenuVisibility);
+    window.addEventListener('hashchange', updateMenuVisibility);
+    document.addEventListener('auth-state-changed', updateMenuVisibility);
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'token' || e.key === 'isGuest') {
+        updateMenuVisibility();
+      }
+    });
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/Story-app1/sw.js')
+        .then(reg => console.log('SW registered:', reg.scope))
+        .catch(console.error);
+    }
+  </script>
 </body>
+
 </html>

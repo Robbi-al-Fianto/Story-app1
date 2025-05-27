@@ -68,9 +68,11 @@ export default class HomeView {
   }
 
   initializeMap(stories) {
-    if (!this.mapView) {
-      this.mapView = new MapView('map', { center: [-6.2000, 106.8166], zoom: 5 });
+
+    if (this.mapView) {
+      this.mapView.destroy();
     }
+    this.mapView = new MapView('map', { center: [-6.2000, 106.8166], zoom: 5 });
     this.mapView.init();
     const items = stories.map((s) => ({
       lat: s.lat,

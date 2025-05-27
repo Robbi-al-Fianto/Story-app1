@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  // Inisialisasi App TANPA panggilan renderPage()
+
   new App({ 
     navigationDrawer, 
     drawerButton, 

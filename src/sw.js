@@ -25,7 +25,7 @@ self.addEventListener('install', evt => {
   self.skipWaiting();
 });
 
-// Activate: hapus cache lama
+//  hapus cache lama
 self.addEventListener('activate', evt => {
   evt.waitUntil(
     caches.keys().then(keys =>
@@ -39,7 +39,7 @@ self.addEventListener('activate', evt => {
   self.clients.claim();
 });
 
-// Fetch: coba cache dulu, baru network
+
 self.addEventListener('fetch', evt => {
   evt.respondWith(
     caches.match(evt.request).then(cached => 
@@ -48,7 +48,7 @@ self.addEventListener('fetch', evt => {
   );
 });
 
-// Push: tampilkan notifikasi
+// tampilkan notifikasi
 self.addEventListener('push', evt => {
   let data = { title: 'New Notification', body: 'You have a new message', url: '/' };
   try { data = evt.data.json(); } catch {}
