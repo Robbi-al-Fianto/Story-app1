@@ -104,8 +104,13 @@ export default class DetailStoryView {
       list.innerHTML = '<li>Belum ada komentar.</li>';
       return;
     }
+    const sorted = [...comments].sort((a, b) => {
+      const timeDiff = new Date(b.createdAt) - new Date(a.createdAt);
+      if (timeDiff !== 0) return timeDiff;
+      return b.cid.localeCompare(a.cid);
+    });
   
-    list.innerHTML = comments.map(c => {
+    list.innerHTML = sorted.map(c => {
       const isOwner = c.author === currentUser;
       return `
         <li class="comment-item" style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem;">
