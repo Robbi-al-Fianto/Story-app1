@@ -1,20 +1,4 @@
-<!doctype html><html lang="id"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Story App</title><base href="/Story-app1/"/><link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/><style>.skip-link {
-      position: absolute;
-      top: -40px;
-      left: 0;
-      background: #000;
-      color: #fff;
-      padding: 0.5rem 1rem;
-      z-index: 1000;
-      text-decoration: none;
-      transition: top 0.3s ease;
-    }
-
-    .skip-link:focus {
-      top: 0;
-    }
-
-    .loading-spinner {
+<!doctype html><html lang="id"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Story App</title><base href="/Story-app1/"/><link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/><style>.loading-spinner {
       position: fixed;
       top: 50%;
       left: 50%;
@@ -88,7 +72,7 @@
 
     .main-content {
       padding: 1rem;
-    }</style><link href="/Story-app1/app.6529b1f9cd96897457a2.css" rel="stylesheet"></head><body><a href="#main-content" class="skip-link">Skip to content</a><header class="navbar" role="banner"><button id="drawer-button" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button><div class="navbar-brand">Story App</div><button id="push-toggle-btn" class="nav-button">Subscribe</button><div class="auth-section"></div></header><aside id="navigation-drawer" class="navigation-drawer" aria-hidden="true" role="navigation"><ul class="drawer-list"><li><a href="#/" class="drawer-link">🏠 Home</a></li><li><a href="#/add" class="drawer-link">➕ Add Story</a></li><li id="login-item"><a href="#/login" class="drawer-link">Login</a></li><li id="liked-item" style="display: none;"><a href="#/liked" class="drawer-link">💖 Liked Stories</a></li></ul></aside><main id="main-content" class="main-content" role="main" tabindex="-1"></main><div class="loading-spinner" id="loading"></div><script>// Loader demo
+    }</style><link href="/Story-app1/app.6529b1f9cd96897457a2.css" rel="stylesheet"></head><body><a href="#" class="skip-link">Skip to content</a><header class="navbar" role="banner"><button id="drawer-button" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button><div class="navbar-brand">Story App</div><button id="push-toggle-btn" class="nav-button">Subscribe</button><div class="auth-section"></div></header><aside id="navigation-drawer" class="navigation-drawer" aria-hidden="true" role="navigation"><ul class="drawer-list"><li><a href="#/" class="drawer-link">🏠 Home</a></li><li><a href="#/add" class="drawer-link">➕ Add Story</a></li><li id="login-item"><a href="#/login" class="drawer-link">Login</a></li><li id="liked-item" style="display: none;"><a href="#/liked" class="drawer-link">💖 Liked Stories</a></li></ul></aside><main id="main-content" class="main-content" role="main" tabindex="-1"></main><div class="loading-spinner" id="loading"></div><script>// Loader demo
     const loading = document.getElementById('loading');
     window.addEventListener('load', () => {
       loading.style.display = 'block';
