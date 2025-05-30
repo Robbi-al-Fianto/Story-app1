@@ -30,7 +30,7 @@ export default class HomeTemplate {
       <article class="story-card" data-story-id="${story.id}">
         <div class="story-card-header">
           <a href="#/stories/${story.id}" class="story-link">
-            <img src="${story.photoUrl}" alt="${story.name}" class="story-image">
+            <img src="${story.photoUrl}" alt="Foto sampul cerita “${story.name}”" class="story-image">
           </a>
           <button class="like-button ${isLiked ? 'liked' : ''}" 
                   data-story-id="${story.id}"

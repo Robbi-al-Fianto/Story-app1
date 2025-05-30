@@ -13,7 +13,7 @@ export default class LikedTemplate {
   card(story) {
     return `
       <article class="liked-story-card">
-        <img src="${story.photoUrl}" alt="${story.name}" class="story-image" loading="lazy">
+        <img src="${story.photoUrl}" alt="Foto sampul cerita “${story.name}”" class="story-image" loading="lazy">
         <div class="story-content">
           <h3 class="story-title">${story.name}</h3>
           <p class="story-description">${story.description}</p>
